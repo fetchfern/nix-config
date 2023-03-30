@@ -1,6 +1,6 @@
 # nix-config
 
-personal nixOS configurations
+My personal x86\_64-linux flake-based NixOS configuration.
 
 ### Building
 
@@ -8,6 +8,9 @@ personal nixOS configurations
 sudo ./bin/build
 ```
 
-the command passes all flags to `nixos-rebuild` so you can give it `--show-trace` for example.
+This script passes all flags to `nixos-rebuild`, so you can give it `--show-trace` for example.
 
+### License
+
+This repository's entire content is released into the Public Domain. See [LICENSE](LICENSE).
 
