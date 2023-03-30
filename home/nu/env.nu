@@ -30,6 +30,8 @@ let-env PROMPT_MULTILINE_INDICATOR = { "::: " }
 let-env BROWSER = "firefox"
 let-env TERMINAL = "kitty"
 
+let-env GPG_TTY = $"(tty)"
+
 let-env ENV_CONVERSIONS = {
   "PATH": {
     from_string: { |s| $s | split row (char esep) | path expand -n }

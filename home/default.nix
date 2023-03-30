@@ -27,7 +27,7 @@
         nvim-lspconfig
         rust-tools-nvim
         gruvbox
-        plenary-nvim
+        feline-nvim
       ];
 
       treesitter = {
