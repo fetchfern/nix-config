@@ -117,7 +117,7 @@
     in with lib; {
       enable = true;
       config = null;
-      extraConfig = builtins.readFile ./i3/config.i3;
+      extraConfig = builtins.readFile ./i3/config;
     };
   };
 }
