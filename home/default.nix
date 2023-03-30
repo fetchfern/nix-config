@@ -100,8 +100,6 @@
     };
   };
 
-  xdg.configFile."kitty/auth.py".source = ./kitty/auth.py;
-
   xsession = {
     enable = true;
 
