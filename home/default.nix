@@ -57,6 +57,10 @@
       userName = "fetchfern";
       userEmail = "fetchfern@proton.me";
 
+      iniContent = {
+        core.editor = "nvim";
+      };
+
       signing = {
         signByDefault = true;
         key = "3A33FE033DCD8340";
