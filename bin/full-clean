@@ -1,0 +1,9 @@
+#!/bin/sh
+echo "This will remove all old generations of all profiles."
+echo "Make sure your system is in a fully working state."
+read -p "Perform full cleanup? [y/N]: " confirmation
+
+if [ "$confirmation" = "y" ] || [ "$confirmation" = "Y" ]; then 
+  nix-collect-garbage -d # TODO: `nix store gc`-equivalent of the -d flag?
+  nix store optimise
+fi
