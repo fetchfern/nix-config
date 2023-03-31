@@ -1,0 +1,111 @@
+#!/bin/sh
+
+function l_fatal() {
+  >&2 echo "fatal: $1"
+}
+
+function l_exit_handle() {
+  [ ! -z $LOG ] && rm $LOG > /dev/null
+  exit $1
+}
+
+function l_assert_dep() {
+  if [ ! command -v $1 &> /dev/null ]
+  then
+    l_fatal "dependency '$1' not found in \$PATH"
+    l_exit_handle 127
+  fi
+}
+
+OPTION="$1"
+TARGET=$2
+
+function l_check_cmd_status() {
+  STATUS=$1
+  CMD=$2
+  if [ ! $STATUS -eq 0 ]
+  then
+    l_assert_dep sed
+    >&2 echo -n "fatal: $CMD exited with code $STATUS: "
+    cat $LOG | sed "s/.*: //g" 1>&2
+    l_exit_handle "$((128 + $STATUS))"
+  fi
+}
+
+function l_show_help() {
+  echo "targz - a utility for working with .tar.gz archives"
+  echo "usage: targz OPTION [TARGET]"
+  echo ""
+  echo "  -x, --extract    extract TARGET from a gzipped archive"
+  echo "  -a, --archive    create a gzipped archive from TARGET"
+  echo "  -h, --help       display this help and exit"
+  echo ""
+  echo "examples:"
+  echo "  targz -x archive.tar.gz    # extract all files archive.tar.gz into archive"
+  echo "  targz -a directory         # archive directory to directory.tar.gz"
+}
+
+function l_assert_target() {
+  if [ -z $TARGET ]
+  then
+    l_fatal "no target specified"
+    l_exit_handle 1
+  fi
+}
+
+function l_extract() {
+  l_assert_target
+
+  l_assert_dep gunzip
+  l_assert_dep tar
+  
+  gunzip -k "$TARGET" 2> $LOG
+  l_check_cmd_status $? gunzip
+  tar -xf "${TARGET%.gz}" 2> $LOG
+  l_check_cmd_status $? tar
+  rm "${TARGET%.gz}"
+}
+
+function l_archive() {
+  l_assert_target
+
+  l_assert_dep tar
+  l_assert_dep gzip
+
+  tar -cf "$TARGET.tar" "$TARGET" 2> $LOG
+  l_check_cmd_status $? tar
+  gzip "$TARGET.tar" 2> $LOG
+  l_check_cmd_status $? gzip
+}
+
+case "$OPTION"
+in
+  -h|--help)
+    l_show_help
+    l_exit_handle 0
+    ;;
+  -x|--extract)
+    l_assert_dep mktemp
+    LOG=$(mktemp /tmp/tmp.targz.XXXXXXXX)
+    l_extract
+    l_exit_handle 0
+    ;;
+  -a|--archive)
+    l_assert_dep mktemp
+    LOG=$(mktemp /tmp/tmp.targz.XXXXXXXX)
+    l_archive
+    l_exit_handle 0
+    ;;
+  "") 
+    l_fatal "no option specified"
+    >&2 echo "try 'targz --help' for more information"
+    l_exit_handle 1
+    ;;
+  *)
+    l_fatal "invalid option '$OPTION'"
+    >&2 echo "try 'targz --help' for more information"
+    l_exit_handle 1
+esac
+
+
+
