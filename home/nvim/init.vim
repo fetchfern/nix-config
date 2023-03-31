@@ -27,6 +27,6 @@ hi DiagnosticError guifg=#ff4934
 lua require("pluginconfig.rust-tools")
 lua require("pluginconfig.feline")
 
-if exists("g:neovide")
+if exists('g:neovide')
 	set guifont=monospace:h16
 end
