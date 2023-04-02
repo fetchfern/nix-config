@@ -54,13 +54,24 @@
 
   services = {
     xserver = {
-       enable = true;
-       layout = "us";
-       videoDrivers = [ "modesetting" "fbdev" ];
-       windowManager.i3 = {
-         enable = true;
-         extraPackages = with pkgs; [];
-       };
+      enable = true;
+      layout = "us";
+      videoDrivers = [ "modesetting" "fbdev" ];
+
+      libinput = {
+        enable = true;
+
+        touchpad = {
+          tapping = false;
+          naturalScrolling = true;
+          disableWhileTyping = true;
+        };
+      };
+
+      windowManager.i3 = {
+        enable = true;
+        extraPackages = with pkgs; [];
+      };
     };
   };
 
