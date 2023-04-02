@@ -9,6 +9,7 @@
       killall
       neovide
       spotify
+      pavucontrol
     ];
 
     stateVersion = "22.11";

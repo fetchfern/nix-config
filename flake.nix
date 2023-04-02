@@ -26,6 +26,8 @@
       inherit system;
 
       config = {
+        pulseaudio = true;
+
         allowUnfreePredicate = pkgMatches [
           "spotify"
         ];

@@ -11,9 +11,11 @@
     ];
   };
 
-  boot.loader = {
-    efi.canTouchEfiVariables = false;
-    systemd-boot.enable = true;
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = false;
+      systemd-boot.enable = true;
+    };
   };
 
   networking.hostName = "nixos";
@@ -73,7 +75,16 @@
         extraPackages = with pkgs; [];
       };
     };
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
   };
+
+  security.rtkit.enable = true;
 
   nix.settings = {
      warn-dirty = false;
