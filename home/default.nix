@@ -8,6 +8,7 @@
       gh
       killall
       neovide
+      spotify
     ];
 
     stateVersion = "22.11";
