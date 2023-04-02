@@ -107,13 +107,6 @@
   xsession = {
     enable = true;
 
-    initExtra = ''
-      xrandr --newmode "2256x1504_60.00"  288.30  2256 2424 2672 3088  1504 1505 1508 1556  -HSync +Vsync
-      xrandr --addmode Virtual-1 2256x1504_60.00
-      xrandr --output Virtual-1 --mode 2256x1504_60.00 --dpi 96 --primary
-      feh --bg-scale /home/fetch/.background-image
-    '';
-
     windowManager.i3 = let
       mod = "Mod4";
     in with lib; {
