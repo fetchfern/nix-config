@@ -17,7 +17,10 @@
     user = "fetch";
     hostname = "nixos";
 
-    pkgMatches = patterns: pkg: builtins.elem (pkg) patterns;
+    pkgMatches = let
+      inherit (nixpkgs) lib;
+    in
+      patterns: pkg: builtins.elem (lib.getName pkg) patterns;
 
     pkgs = import nixpkgs {
       inherit system;
@@ -32,7 +35,7 @@
     localpkgs = import ./localpkgs;
   in {
     nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
-      inherit system;
+      inherit pkgs system;
 
       modules = [
         ./system/configuration.nix
