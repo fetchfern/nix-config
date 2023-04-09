@@ -4,61 +4,29 @@
   imports = [ ./hardware-configuration.nix ]; 
 
   environment = {
-    shells = [ pkgs.nushell ];
     systemPackages = with pkgs; [
       ed
       wget
     ];
   };
 
-  boot = {
-    loader = {
-      efi.canTouchEfiVariables = false;
-      systemd-boot.enable = true;
-    };
-  };
-
-  networking.hostName = "nixos";
-  networking.networkmanager.enable = true;
-
-  time.timeZone = "America/Toronto";
-
-  i18n.defaultLocale = "en_CA.UTF-8";
-
   users.users.fetch = {
-    shell = pkgs.nushell;
+    shell = pkgs.fish;
     isNormalUser = true;
     home = "/home/fetch";
     description = "fetch";
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
-  fonts = {
-    enableDefaultFonts = true;
-    fonts = with pkgs; [
-      twemoji-color-font
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      iosevka
-      (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
-    ];
-    
-    fontconfig = {
-      defaultFonts = {
-        monospace = [ "Iosevka" "Noto Sans Mono" ];
-        serif = [ "Noto Serif" ];
-        sansSerif = [ "Noto Sans" ];
-        emoji = [ "Twemoji Color Emoji" "Noto Color Emoji" ];
-      };
-    };
+  programs = {
+    fish.enable = true;
   };
 
   services = {
     xserver = {
       enable = true;
       layout = "us";
-      videoDrivers = [ "modesetting" "fbdev" ];
+      videoDrivers = [ "modesetting" ];
 
       libinput = {
         enable = true;
@@ -84,7 +52,42 @@
     };
   };
 
+  fonts = {
+    enableDefaultFonts = true;
+    fonts = with pkgs; [
+      twemoji-color-font
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      iosevka
+      (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+    ];
+    
+    fontconfig = {
+      defaultFonts = {
+        monospace = [ "Iosevka" "Noto Sans Mono" ];
+        serif = [ "Noto Serif" ];
+        sansSerif = [ "Noto Sans" ];
+        emoji = [ "Twemoji Color Emoji" "Noto Color Emoji" ];
+      };
+    };
+  };
+
   security.rtkit.enable = true;
+
+  boot = {
+    loader = {
+      efi.canTouchEfiVariables = false;
+      systemd-boot.enable = true;
+    };
+  };
+
+  networking.hostName = "nixos";
+  networking.networkmanager.enable = true;
+
+  time.timeZone = "America/Toronto";
+
+  i18n.defaultLocale = "en_CA.UTF-8";
 
   nix.settings = {
      warn-dirty = false;

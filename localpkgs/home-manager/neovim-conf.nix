@@ -12,7 +12,7 @@ let
 
   nvimConfig = pkgs.neovimUtils.makeNeovimConfig {
     withPython3 = false;
-    withNodeJs = false;
+    withNodeJs = true;
     withRuby = false;
     plugins = allPlugins;
     customRC = "";

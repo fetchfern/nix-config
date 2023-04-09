@@ -29,7 +29,9 @@
         pulseaudio = true;
 
         allowUnfreePredicate = pkgMatches [
+          "vscode"
           "spotify"
+          "discord"
         ];
       };
     };
