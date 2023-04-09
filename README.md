@@ -10,16 +10,15 @@ My personal x86\_64-linux flake-based NixOS configuration.
 
 This script passes all flags to `nixos-rebuild`, so you can give it `--show-trace` for example.
 
-## Quick start
+## Todo
 
-To get a freshly installed NixOS to use this configuration:
-
-1. Install git and clone the repository
-2. Generate a hardware configuration with the [provided script](./bin/generate-hw-config)
-3. Rebuild your system with the [build script](./bin/build)
-4. Set a password for the user account
-5. Setup Github credentials with the `gh` cli
-6. Setup GPG keys for git commit signing
+- fix GPG integration with the fish shell (`GPG_TTY`)
+- neovim completions (coq.nvim?)
+- finish up/separate tmux configuration
+- program launcher (watchtower project)
+- fix polybar modules and add battery/sound
+- find easily reproducible solution for secrets (gpg keypairs, gh auth, etc)
+- setup SSH with git
 
 ## License
 
