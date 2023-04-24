@@ -1,0 +1,6 @@
+[package]
+name = "eww_module_notif"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

@@ -5,7 +5,7 @@
 
   environment = {
     systemPackages = with pkgs; [
-      ed
+      vim
       wget
     ];
   };
@@ -19,12 +19,13 @@
   };
 
   programs = {
-    fish.enable = true;
+    fish = { enable = true; };
   };
 
   services = {
     xserver = {
       enable = true;
+
       layout = "us";
       videoDrivers = [ "modesetting" ];
 
@@ -40,15 +41,15 @@
 
       windowManager.i3 = {
         enable = true;
-        extraPackages = with pkgs; [];
       };
     };
 
     pipewire = {
       enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
     };
   };
 
@@ -73,26 +74,30 @@
     };
   };
 
-  security.rtkit.enable = true;
-
   boot = {
     loader = {
       efi.canTouchEfiVariables = false;
-      systemd-boot.enable = true;
+      systemd-boot = { enable = true; };
     };
   };
 
   networking.hostName = "nixos";
-  networking.networkmanager.enable = true;
+  networking.networkmanager = { enable = true; };
 
   time.timeZone = "America/Toronto";
 
   i18n.defaultLocale = "en_CA.UTF-8";
 
   nix.settings = {
-     warn-dirty = false;
-     experimental-features = [ "nix-command" "flakes" ];
+    warn-dirty = false;
+    experimental-features = [ "nix-command" "flakes" ];
   };
+
+  security = {
+    rtkit = { enable = true; };
+  };
+
+  sound.enable = true;
 
   system.stateVersion = "22.11";
 }

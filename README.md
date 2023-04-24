@@ -4,7 +4,7 @@ My personal x86\_64-linux flake-based NixOS configuration.
 
 ## Building
 
-```sh
+```
 # ./bin/build
 ```
 

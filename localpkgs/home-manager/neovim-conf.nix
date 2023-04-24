@@ -11,7 +11,7 @@ let
   ] else [ ]);
 
   nvimConfig = pkgs.neovimUtils.makeNeovimConfig {
-    withPython3 = false;
+    withPython3 = true;
     withNodeJs = true;
     withRuby = false;
     plugins = allPlugins;

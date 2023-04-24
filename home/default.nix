@@ -1,7 +1,6 @@
 { config, lib, pkgs, localpkgs, ... }: {
   imports = with localpkgs; [
     home-manager.neovim-conf
-    home-manager.fish-conf
   ];
 
   home = {
@@ -11,15 +10,27 @@
       gh
       killall
       neovide
-      spotify
-      pavucontrol
       discord
       vscode
       maim
       slop
       bacon
       krita
-    ];
+      tree-sitter
+      vim
+      audacity
+      spotifyd
+      spotify
+      eww
+      file
+      sxiv
+      ffmpeg
+    ] ++ [
+      (callPackage localpkgs.tmux-dev { })
+    ] ++ (with eww-modules; [
+      i3ws
+      notif
+    ]);
 
     stateVersion = "22.11";
   };
@@ -71,11 +82,6 @@
       config.global.disable_stdin = true;
       nix-direnv.enable = true;
     };
-
-    fish-conf = {
-      enable = true;
-      configSrc = ./fish;
-    };
   
     neovim-conf = {
       enable = true;
@@ -86,10 +92,12 @@
         vim-nix
         nvim-lspconfig
         rust-tools-nvim
-        gruvbox
+        rust-vim
         feline-nvim
         instant-nvim
         editorconfig-nvim
+        coq_nvim
+        nightfox-nvim
       ];
 
       treesitter = {
@@ -140,13 +148,9 @@
       pinentryFlavor = "curses";
     };
 
-    polybar = let
-      package = pkgs.polybar.override {
-        i3Support = true;
-      };
-    in {
+    polybar = {
       enable = true;
-      inherit package;
+      package = pkgs.polybar.override { i3Support = true; };
       config = ./polybar/config.ini;
       script = ""; # WORKAROUND: polybar must be started
                    # after i3 for the i3 workspaces feature
@@ -154,20 +158,25 @@
                    # started in the i3 config file.
     };
 
-    picom = {
-      enable = true;
-    };
+    picom = { enable = true; };
   };
 
   xsession = {
     enable = true;
 
-    windowManager.i3 = let
-      mod = "Mod4";
-    in with lib; {
+    windowManager.i3 = {
       enable = true;
       config = null;
       extraConfig = builtins.readFile ./i3/config;
+    };
+  };
+
+  xdg = {
+    configFile = let
+      configDir = dirname: { source = dirname; recursive = true; };
+    in {
+      "eww" = configDir ./eww/cfg;
+      "fish" = configDir ./fish;
     };
   };
 }

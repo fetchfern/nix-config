@@ -1,2 +1,12 @@
 #!/bin/sh
-nixos-rebuild switch $@ --flake .# 
+
+# do not run as root, as git commands are almost never pure
+# and WILL fuck up your permissions in .git
+test `whoami` = "root" && echo "do not run as root!" && exit 1
+# protip: to fix permissions, sudo chown -R fetch .git
+
+git status -s \
+	| gawk 'match($0, /\?\?\s(.*)/, o) { print "\033[31mdanger:\033[0m untracked path \"" o[1] "\"" }'
+
+nix flake lock --update-input eww-modules
+sudo nixos-rebuild switch $@ --fast --flake .# 

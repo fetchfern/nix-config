@@ -1,0 +1,60 @@
+(defwindow bar
+	:stacking "bg"
+	:windowtype "dock"
+	:wm-ignore false
+	:geometry (geometry
+				:width "100%"
+				:height "30px")
+	:anchor "top center"
+	(bar_layout))
+
+(defpoll date :interval "1s"
+	`date +'%b %d · %I:%M %p'`)
+
+(defwidget bar_layout []
+	(centerbox
+		:orientation "h"
+		:class "bar-layout"
+		(box
+			:halign "start")
+		(box
+			:halign "center"
+			(label
+				:text date))
+		(box
+			:halign "end"
+			(battery
+				:state {EWW_BATTERY.BAT1.status}
+				:bat {EWW_BATTERY.BAT1.capacity}
+				:charging "assets/battery-charging.png"
+				:empty "assets/battery-empty.png"
+				:low "assets/battery-low.png"
+				:med "assets/battery-medium.png"
+				:high "assets/battery-high.png"
+				:full "assets/battery-full.png"))))
+
+
+(defwidget battery [state bat charging empty low med high full]
+	(image
+		:class "battery"
+		:image-width 32
+		:image-height 32
+		:path {
+			state == 'Charging' ? charging :
+			state == 'Not charging' ? charging :
+			;; woah, what?
+			;; when the state is 'not charging', it means
+			;; the power IS connected, but it's not ACTIVELY
+			;; charging (to not, yknow, kill the battery)
+			;; so we're just gonna say it's charging (which
+			;; in this case really means 'plugged in'. maybe
+			;; i should rename the variable? :P).
+			bat < 10 ? empty :
+			bat < 40 ? low :
+			bat < 70 ? med :
+			bat < 90 ? high :
+			full
+		}))
+
+
+			

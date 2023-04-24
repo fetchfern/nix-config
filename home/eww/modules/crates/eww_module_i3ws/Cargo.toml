@@ -1,0 +1,6 @@
+[package]
+name = "eww_module_i3ws"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

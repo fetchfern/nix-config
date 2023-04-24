@@ -3,16 +3,15 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-    };
+    home-manager.url = "github:nix-community/home-manager";
+    eww-modules.url = "path:home/eww/modules";
   };
 
   outputs = {
     nixpkgs,
-    home-manager,
+    eww-modules,
     ...
-  }: let
+  } @ inputs: let
     system = "x86_64-linux";
     user = "fetch";
     hostname = "nixos";
@@ -25,9 +24,13 @@
     pkgs = import nixpkgs {
       inherit system;
 
-      config = {
-        pulseaudio = true;
+      overlays = [
+        (final: prev: {
+          eww-modules = eww-modules.packages."${system}";
+        })
+      ];
 
+      config = {
         allowUnfreePredicate = pkgMatches [
           "vscode"
           "spotify"
@@ -37,20 +40,21 @@
     };
 
     localpkgs = import ./localpkgs;
+
+    home-manager = {
+      users."${user}" = import ./home;
+      useUserPackages = true;
+      useGlobalPkgs = true;
+      extraSpecialArgs = { inherit localpkgs; };
+    };
+
   in {
     nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
       inherit pkgs system;
 
       modules = [
         ./system/configuration.nix
-        home-manager.nixosModule {
-          home-manager = {
-            users."${user}" = import ./home;
-            useUserPackages = true;
-            useGlobalPkgs = true;
-            extraSpecialArgs = { inherit localpkgs; };
-          };
-        }
+        inputs.home-manager.nixosModule { inherit home-manager; }
       ];
     };
   };
