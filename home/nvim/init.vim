@@ -11,7 +11,6 @@ set signcolumn=no
 set nowritebackup
 set mouse=nvia
 set updatetime=300
-
 let mapleader=' '
 
 nnoremap <silent><leader>wv <cmd>vsplit<CR>
@@ -20,6 +19,14 @@ nnoremap <silent><leader>h <C-w>h
 nnoremap <silent><leader>j <C-w>j
 nnoremap <silent><leader>k <C-w>k
 nnoremap <silent><leader>l <C-w>l
+
+tnoremap <silent><Esc> <C-\><C-n>
+
+aug rc_term
+  au!
+  au TermOpen * setlocal nonumber | setlocal norelativenumber
+  au TermEnter * startinsert
+aug END
 
 aug rc_diagnostics
   au!
@@ -52,6 +59,7 @@ let g:coq_settings = {
 lua require("pluginconfig.rust-tools")
 lua require("pluginconfig.feline")
 lua require("pluginconfig.treesitter")
+lua require("pluginconfig.dianostic")
 lua require("coq")
 
 colorscheme nightfox

@@ -1,2 +1,2 @@
 ./bin/build
-eww reload
+EWWMOD_NET_INTERFACE=wlp166s0 eww reload

@@ -3,6 +3,8 @@
 {
   imports = [ ./hardware-configuration.nix ]; 
 
+  virtualisation.libvirtd.enable = true;
+
   environment = {
     systemPackages = with pkgs; [
       vim
@@ -10,16 +12,19 @@
     ];
   };
 
+  sound.enable = true;
+
   users.users.fetch = {
     shell = pkgs.fish;
     isNormalUser = true;
     home = "/home/fetch";
     description = "fetch";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
   };
 
   programs = {
     fish = { enable = true; };
+    dconf.enable = true;
   };
 
   services = {
@@ -46,6 +51,7 @@
 
     pipewire = {
       enable = true;
+      pulse = { enable = true; };
       alsa = {
         enable = true;
         support32Bit = true;
@@ -96,8 +102,6 @@
   security = {
     rtkit = { enable = true; };
   };
-
-  sound.enable = true;
 
   system.stateVersion = "22.11";
 }

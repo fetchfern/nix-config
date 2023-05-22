@@ -1,0 +1,64 @@
+@use 'gruvbox';
+
+.bar-root {
+	padding: 4px 10px 4px 10px;
+}
+
+.bar-separator {
+	color: #434343;
+	font-size: 0.925em;
+}
+
+.bar-battery {
+	background-size: 22px;
+	background-position: +4px;
+	background-repeat: no-repeat;
+
+	&-charging {
+		@extend .bar-battery;
+		background-image: url('assets/proc/battery-charging.proc.png');
+	}
+
+	&-full {
+		@extend .bar-battery;
+		background-image: url('assets/proc/battery-full.proc.png');
+	}
+
+	&-high {
+		@extend .bar-battery;
+		background-image: url('assets/proc/battery-high.proc.png');
+	}
+
+	&-med {
+		@extend .bar-battery;
+		background-image: url('assets/proc/battery-medium.proc.png');
+	}
+
+	&-low {
+		@extend .bar-battery;
+		background-image: url('assets/proc/battery-low.proc.png');
+	}
+
+	&-emtpy {
+		@extend .bar-battery;
+		background-image: url('assets/proc/battery-empty.proc.png');
+	}
+}
+
+.bar-network {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.bar-netstate-ico {
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+.bar-netessid-text {
+	padding-left: 4px
+}
+
+.bar-volume highlight {
+	background-color: gruvbox.$green;
+}

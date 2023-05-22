@@ -2,13 +2,10 @@ local sev = vim.diagnostic.severity
 
 vim.diagnostic.config({
 	underline = {
-		severity = { sev.ERROR, sev.WARN },
+		severity = assert(sev.ERROR),
 	},
 
-	virtual_text = {
-		severity = sev.ERROR,
-		source = false,
-	},
+	virtual_text = false,
 
 	float = {
 		scope = "cursor",
@@ -17,6 +14,5 @@ vim.diagnostic.config({
 	},
 
 	signs = false,
-	update_in_insert = false,
 	severity_sort = true,
 })

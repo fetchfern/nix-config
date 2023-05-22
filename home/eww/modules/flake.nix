@@ -26,16 +26,26 @@
   in {
     packages."${system}" = {
       i3ws = naersk.buildPackage {
-        pname = "eww_module_i3ws";
+        pname = "ewwmod_i3ws";
         src = ./.;
       };
 
       notif = naersk.buildPackage {
-        pname = "eww_module_notif";
+        pname = "ewwmod_notif";
         src = ./.;
       };
 
-     process_graphics = naersk.buildPackage {
+      netqual = naersk.buildPackage {
+        pname = "ewwmod_netqual";
+        src = ./.;
+      };
+
+      netessid = naersk.buildPackage {
+        pname = "ewwmod_netessid";
+        src = ./.;
+      };
+
+      process_graphics = naersk.buildPackage {
         pname = "process_graphics";
         src = ./.;
       };

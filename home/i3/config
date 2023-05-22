@@ -48,7 +48,7 @@ bindsym $m+Shift+9 move container to workspace 9
 bindsym $m+Shift+0 move container to workspace 0
 bindsym $m+F12 exec maim -us /home/fetch/screenshots/latest.png
 
-gaps inner 15
+gaps inner 12
 gaps outer 0
 smart_gaps off
 
@@ -63,3 +63,5 @@ mode "resize" {
 exec --no-startup-id i3-msg workspace 7
 exec --no-startup-id polybar top
 exec --no-startup-id feh --bg-scale /home/$USER/.background-image
+
+for_window [title="^dev-float"] floating enable, border normal

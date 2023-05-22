@@ -1,0 +1,11 @@
+#!/bin/sh
+# vim:ft=sh
+
+vol=$(amixer -D pipewire sget Master | \
+	grep 'Right:' --color=none | \
+	awk -F[][] '{ print $2 }' | \
+	tr -d %)
+
+eww update current-volume=$vol
+echo $vol
+

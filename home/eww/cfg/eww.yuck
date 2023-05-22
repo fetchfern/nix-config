@@ -4,17 +4,65 @@
 	:wm-ignore false
 	:geometry (geometry
 				:width "100%"
-				:height "30px")
-	:anchor "top center"
+				:height "36px"
+				:anchor "top center")
 	(bar_layout))
 
-(defpoll date :interval "1s"
-	`date +'%b %d · %I:%M %p'`)
+(defwindow board
+	:stacking "fg"
+	:windowtype "dialog"
+	:wm-ignore false
+	:geometry (geometry
+				:width "20%"
+				:height "35%"
+				:anchor "top right")
+	(board-root))
+
+(defwidget board-root []
+	(box
+		:space-evenly false
+		:spacing 16
+		:orientation "v"
+		:class "board-root"
+		(board-section-name :text "[soundboard]")
+		(board-sound)
+		))
+
+
+(defwidget board-section-name [text]
+	(label
+		:text text
+		:class "board-section-name"
+		:xalign 0
+		:justify "left"))
+
+(defvar current-volume "0")
+
+(defwidget board-sound []
+	(box
+		:orientation "h"
+		:space-evenly false
+		:spacing 16
+		(box
+			:width 32
+			:height 32
+			:class { "board-speaker-icon " + (
+				current-volume > 50 ? "board-speaker-icon-high" :
+				current-volume > 15 ? "board-speaker-icon-low" :
+				current-volume >  0 ? "board-speaker-icon-none" :
+									  "board-speaker-icon-x"
+			)})
+		(volume)))
+
+(defpoll date :interval "1s" `date +'%b %d · %I:%M %p'`)
+
+(defpoll netstate :interval "3s" `ewwmod_netqual`)
+(defpoll netessid :interval "3s" `ewwmod_netessid`)
 
 (defwidget bar_layout []
 	(centerbox
+		:class "root bar-root"
 		:orientation "h"
-		:class "bar-layout"
 		(box
 			:halign "start")
 		(box
@@ -23,38 +71,57 @@
 				:text date))
 		(box
 			:halign "end"
+			:space-evenly false
+			(separator)
+			(separator)
+			(network)
+			(separator)
 			(battery
-				:state {EWW_BATTERY.BAT1.status}
-				:bat {EWW_BATTERY.BAT1.capacity}
-				:charging "assets/battery-charging.png"
-				:empty "assets/battery-empty.png"
-				:low "assets/battery-low.png"
-				:med "assets/battery-medium.png"
-				:high "assets/battery-high.png"
-				:full "assets/battery-full.png"))))
+				:state { EWW_BATTERY.BAT1.status }
+				:bat { EWW_BATTERY.BAT1.capacity }))))
 
 
-(defwidget battery [state bat charging empty low med high full]
-	(image
-		:class "battery"
-		:image-width 32
-		:image-height 32
-		:path {
-			state == 'Charging' ? charging :
-			state == 'Not charging' ? charging :
-			;; woah, what?
-			;; when the state is 'not charging', it means
-			;; the power IS connected, but it's not ACTIVELY
-			;; charging (to not, yknow, kill the battery)
-			;; so we're just gonna say it's charging (which
-			;; in this case really means 'plugged in'. maybe
-			;; i should rename the variable? :P).
-			bat < 10 ? empty :
-			bat < 40 ? low :
-			bat < 70 ? med :
-			bat < 90 ? high :
-			full
-		}))
+(defwidget separator []
+	(label
+		:class "bar-separator"
+		:width 16 
+		:text "|"))
+
+(defwidget network []
+	(box
+		:class "bar-network"
+		:space-evenly false
+		(label
+			:text {
+				netessid == "" ? netstate : (netstate + " " + netessid)
+			})))
+
+(defwidget battery [state bat]
+	(box
+		(box
+			:width 32
+			:height 32
+			:class {
+				state == "Charging" ? "bar-battery-charging" :
+				bat >= 85  ? "bar-battery-full" :
+				bat >= 65 ? "bar-battery-high" :
+				bat >= 35 ? "bar-battery-med" :
+				bat >= 10 ? "bar-battery-low" :
+				"bar-battery-empty"
+			})))
+
+(defpoll volume-poll :interval "1s" `./scripts/volume.get`)
+
+(defwidget volume []
+	(eventbox
+	    :class "scale-box"
+		(scale
+			:class "scale bar-volume"
+			:width 176
+			:value volume-poll
+			:min 0
+			:max 100
+			:onchange "./scripts/volume.set {}"
+			)))
 
 
-			

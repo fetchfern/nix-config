@@ -25,15 +25,27 @@
       file
       sxiv
       ffmpeg
+      qemu
+      virt-manager
+      gcc
+      gnumake
+      picom
+      pulseaudio
+      nodePackages.pnpm
+      playerctl
+      vivaldi
     ] ++ [
       (callPackage localpkgs.tmux-dev { })
     ] ++ (with eww-modules; [
       i3ws
       notif
+      netqual
+      netessid
     ]);
 
     stateVersion = "22.11";
   };
+
   
   programs = {
     feh.enable = true;
@@ -92,7 +104,6 @@
         vim-nix
         nvim-lspconfig
         rust-tools-nvim
-        rust-vim
         feline-nvim
         instant-nvim
         editorconfig-nvim
@@ -157,8 +168,6 @@
                    # to work, for that reason polybar is
                    # started in the i3 config file.
     };
-
-    picom = { enable = true; };
   };
 
   xsession = {

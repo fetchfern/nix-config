@@ -1,0 +1,6 @@
+#!/bin/sh
+# vim:ft=sh
+
+amixer -D pipewire sset Master $1%
+eww update current-volume=$1
+

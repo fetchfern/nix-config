@@ -1,9 +1,64 @@
-.bar-layout {
-	background-color: #131a24;
-	color: #dadada;
+@use 'bar';
+@use 'gruvbox';
+
+* { all: unset; }
+
+.root {
+	background-color: gruvbox.$bg;
+	color: gruvbox.$fg;
 	font-family: monospace;
+	font-size: 120%;
 }
 
-.battery {
-	color: #ffffff;
+.scale trough {
+	background-color: gruvbox.$bg-accent;
+	border-radius: 8px;
+	min-height: 6px;
 }
+
+.scale highlight {
+	border-radius: 8px;
+	min-width: 4px;
+	transition: 0.26s;
+}
+
+.scale-box:hover highlight {
+	min-height: 12px;
+}
+
+.board-root {
+	margin-top: 50px;
+	background-color: gruvbox.$bg;
+	padding: 16px;
+}
+
+.board-section-name {
+	font-family: monospace;
+	color: gruvbox.$fg-faded;
+}
+
+.board-speaker-icon {
+	background-size: 24px;
+	background-repeat: no-repeat;
+
+	&-high {
+		background-image: url('assets/proc/speaker-high.proc.png');
+		background-position: +10px;
+	}
+
+	&-low {
+		background-image: url('assets/proc/speaker-low.proc.png');
+		background-position: +8px;
+	}
+
+	&-none {
+		background-image: url('assets/proc/speaker-mute.proc.png');
+		background-position: +6px;
+	}
+
+	&-x {
+		background-image: url('assets/proc/speaker-off.proc.png');
+		background-position: +10px;
+	}
+}
+
